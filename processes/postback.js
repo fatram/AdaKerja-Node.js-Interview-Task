@@ -6,28 +6,50 @@ module.exports = function processPostback(event) {
   const senderID = event.sender.id;
   const payload = event.postback.payload;
   if (payload === 'getstarted') {
-     request({ url: "https://graph.facebook.com/v2.6/" + senderID,
-     qs: { access_token: process.env.PAGE_ACCESS_TOKEN,
-           fields: "first_name"
-         },
-     method: "GET"
-  }, function(error, response, body) {
-      let greeting = '';
-      if (error) {
-          console.error("Error getting user name: " + error);
-      } else {
-          let bodyObject = JSON.parse(body);
-          console.log(bodyObject);
-          name = bodyObject.first_name;
-          greeting = "Hello " + name  + ". ";
-     }
-
-     let message = greeting + "Welcome to Askbot. Hope you are doing good today";
-     let message2 = "I am your friendly neighborhood bot :-)";
+    addUserId(senderID);
+    let message = "Hi, welcome to Askbot. Hope you are doing good today";
+    let message2 = "I am your friendly neighborhood bot :D";
+    let message3 = "May I know your first name?";
+    senderAction(senderID);
+    sendMessage(senderID, {text: message}).then(() => {
+    sendMessage(senderID, { text: message2 }).then(() => {
+        sendMessage(senderID, {text: message3});
+    })
+   });
+ } else if (payload === 'NO') {
+     let message = "Goodbye"
      senderAction(senderID);
-       sendMessage(senderID, {text: message}).then(() => {
-         sendMessage(senderID, { text: message2 })
-    });
-  });
+     sendMessage(senderID, {text: message})
+ } else if (payload === 'YES') {
+    let nextBirthday = new Date();
+    nextBirthday.setFullYear(nextBirthday.getFullYear() + 1);
+    let today = new Date();
+    let diffTime = Math.abs(nextBirthday - today);
+    let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+    let msg = "There are " + diffDays + " days left until your next birthday"
+    senderAction(senderID);
+    sendMessage(senderID, {text: msg});
  }
+}
+
+function addUserId(uid) {
+    var mysql = require('mysql');
+
+    var con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "askbot"
+    });
+
+    con.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected!");
+    var sql = "INSERT IGNORE INTO user_info (id) VALUES (?)";
+    var vals = [uid];
+    con.query(sql, vals, function (err, result) {
+        if (err) throw err;
+        console.log("1 record inserted");
+    });
+    });
 }

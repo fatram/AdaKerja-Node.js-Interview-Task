@@ -1,8 +1,10 @@
-const processPostback = require('../processes/postback');
-const processMessage = require('../processes/messages');
-var request = require('request')
+const processPostback = require('./processes/postback');
+const processMessage = require('./processes/messages');
+const cntlr = require('./controller');
+const request = require('request');
 
 module.exports = function(app, chalk){
+
    app.get('/setup',function(req,res){
       var messageData = {
          "get_started":{
@@ -58,4 +60,8 @@ module.exports = function(app, chalk){
     res.sendStatus(200);
    }
   });
+
+  app.route('/messages').get(cntlr.getMessages);
+  app.route('/messages/message').get(cntlr.getMessageById);
+  app.route('/messages/delete').get(cntlr.removeMessageById);
 }

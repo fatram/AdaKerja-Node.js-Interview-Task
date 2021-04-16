@@ -10,7 +10,8 @@ module.exports = function sendMessage(recipientId, message){
             method: "POST",
             json: {
                 recipient: {id: recipientId},
-                message: message,
+                messaging_type: "RESPONSE",
+                message: message
             }
         }, function(error, response, body) {
             if (error) {

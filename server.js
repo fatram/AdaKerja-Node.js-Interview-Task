@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended:false }));
 app.use(bodyParser.json());
 
 // app routes
-require('./routes/webhook_verify')(app);
+require('./routes')(app);
 
 // warming up the engines !! setta !! go !!!.
 app.listen(app.get('port'), function() {
