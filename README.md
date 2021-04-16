@@ -9,9 +9,6 @@
 - Edit file .env to add your own Facebook page access token and verification token.    
 - You can use ngrok to publicize your local network to get HTTPS URL
 
-### Here is the live messenger link
-https://www.facebook.com/AskBot-102100942020922/
-
 ### Endpoints for viewing or deleting message(s)
 - To view all messages
 `/messages`
