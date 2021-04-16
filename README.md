@@ -12,6 +12,14 @@
 ### Here is the live messenger link
 https://www.facebook.com/AskBot-102100942020922/
 
+### Endpoints for viewing or deleting message(s)
+- To view all messages
+`/messages`
+- To view message with a certain id
+`/messages/message?id=YOUR_ID`
+- To delete message with a certain id
+`/messages/delete?id=YOUR_ID`
+
 ### Screenshots
 
 <img src="screenshots/1.jpg" alt="AskBot" width="300"/>
