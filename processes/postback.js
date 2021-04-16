@@ -27,8 +27,6 @@ module.exports = function processPostback(event) {
      senderAction(senderID);
        sendMessage(senderID, {text: message}).then(() => {
          sendMessage(senderID, { text: message2 })
-         })
-      });
     });
   });
  }
