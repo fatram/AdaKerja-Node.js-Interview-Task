@@ -44,8 +44,8 @@ module.exports = function(app, chalk){
     //checking for page subscription.
     if (req.body.object === 'page'){
        
-       /* Iterate over each entry, there can be multiple entries 
-       if callbacks are batched. */
+       // Iterate over each entry, there can be multiple entries 
+       // if callbacks are batched.
        req.body.entry.forEach(function(entry) {
        // Iterate over each messaging event
           entry.messaging.forEach(function(event) {
@@ -61,6 +61,7 @@ module.exports = function(app, chalk){
    }
   });
 
+  // Endpoints for viewing or deleting message(s).
   app.route('/messages').get(cntlr.getMessages);
   app.route('/messages/message').get(cntlr.getMessageById);
   app.route('/messages/delete').get(cntlr.removeMessageById);

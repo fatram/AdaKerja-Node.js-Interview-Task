@@ -6,7 +6,7 @@ module.exports = function processPostback(event) {
   const senderID = event.sender.id;
   const payload = event.postback.payload;
   if (payload === 'getstarted') {
-    addUserId(senderID);
+    addUserId(senderID); // Add sender id to the database once user get started with bot
     let message = "Hi, welcome to Askbot. Hope you are doing good today";
     let message2 = "I am your friendly neighborhood bot :D";
     let message3 = "May I know your first name?";
@@ -16,19 +16,6 @@ module.exports = function processPostback(event) {
         sendMessage(senderID, {text: message3});
     })
    });
- } else if (payload === 'NO') {
-     let message = "Goodbye"
-     senderAction(senderID);
-     sendMessage(senderID, {text: message})
- } else if (payload === 'YES') {
-    let nextBirthday = new Date();
-    nextBirthday.setFullYear(nextBirthday.getFullYear() + 1);
-    let today = new Date();
-    let diffTime = Math.abs(nextBirthday - today);
-    let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-    let msg = "There are " + diffDays + " days left until your next birthday"
-    senderAction(senderID);
-    sendMessage(senderID, {text: msg});
  }
 }
 

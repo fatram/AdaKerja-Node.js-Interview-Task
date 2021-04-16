@@ -2,7 +2,8 @@ const request = require('request');
 const senderAction = require('../templates/senderAction');
 const sendMessage = require('../templates/sendMessage');
 
-const askTemplate = (text) => {
+// template for yes/no answer quick reply
+const askTemplate = (text) => { 
     return {
         "text": text,
         "quick_replies":[
@@ -19,8 +20,8 @@ const askTemplate = (text) => {
     }
 }
 
-const yesWords = ['yes', 'yeah', 'yup', 'sure', 'okay', 'yea', 'ok']
-const noWords = ['no', 'nope', 'nah']
+const yesWords = ['yes', 'yeah', 'yup', 'sure', 'okay', 'yea', 'ok'] // synonyms for yes
+const noWords = ['no', 'nope', 'nah'] // synonyms for no
 
 module.exports = function processMessage(event) {
     if (!event.message.is_echo) {
@@ -30,10 +31,10 @@ module.exports = function processMessage(event) {
         console.log("Message is: " + JSON.stringify(message));
         if (message.text) {
             let text = message.text;
-            saveMessage(senderID, text, Date.now());
+            saveMessage(senderID, text, Date.now()); // save user message in database
             var request = require("request");
             if (Date.parse(text)) {
-                updateBirthday(senderID, new Date(text));
+                updateBirthday(senderID, new Date(text)); // update user birthday in database
                 response = askTemplate('Do you want to know how many days till your next birthday?');
                 senderAction(senderID);
                 sendMessage(senderID, response);
@@ -42,10 +43,10 @@ module.exports = function processMessage(event) {
                 senderAction(senderID);
                 sendMessage(senderID, {text: msg});
             } else if (yesWords.includes(text.toLowerCase())) {
-                findDiffBirthday(senderID);
+                findDiffBirthday(senderID); // Calculate and send days to the next birthday
             } else {
                 let msg = "Hello " + text;
-                updateFirstName(senderID, text);
+                updateFirstName(senderID, text); // update user first name in database
                 console.log(senderID);
                 senderAction(senderID);
                 sendMessage(senderID, {text: msg}).then(() => {
@@ -61,6 +62,7 @@ module.exports = function processMessage(event) {
 function saveMessage(uid, msg, timestamp) {
     var mysql = require('mysql');
 
+    // establish mysql connection
     var con = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -68,6 +70,7 @@ function saveMessage(uid, msg, timestamp) {
     database: "askbot"
     });
 
+    // connect for query processing
     con.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
@@ -83,13 +86,15 @@ function saveMessage(uid, msg, timestamp) {
 function updateFirstName(uid, firstName) {
     var mysql = require('mysql');
 
+    // establish mysql connection
     var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "askbot"
-    });
-
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "askbot"
+        });
+    
+    // connect for query processing
     con.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
@@ -97,7 +102,7 @@ function updateFirstName(uid, firstName) {
     var vals = [firstName, uid];
     con.query(sql, vals, function (err, result) {
         if (err) {
-            addUserId(uid);
+            addUserId(uid); // if user id didnt exist yet, just add right now
         };
         console.log("1 record updated");
     });
@@ -107,13 +112,15 @@ function updateFirstName(uid, firstName) {
 function updateBirthday(uid, birthday) {
     var mysql = require('mysql');
 
+    // establish mysql connection
     var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "askbot"
-    });
-
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "askbot"
+        });
+    
+    // connect for query processing
     con.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
@@ -121,7 +128,7 @@ function updateBirthday(uid, birthday) {
     var vals = [birthday, uid];
     con.query(sql, vals, function (err, result) {
         if (err) {
-            addUserId(uid);
+            addUserId(uid);  // if user id didnt exist yet, just add right now
         };
         console.log("1 record updated");
     });
@@ -131,13 +138,15 @@ function updateBirthday(uid, birthday) {
 function addUserId(uid) {
     var mysql = require('mysql');
 
+    // establish mysql connection
     var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "askbot"
-    });
-
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "askbot"
+        });
+    
+    // connect for query processing
     con.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
@@ -153,13 +162,15 @@ function addUserId(uid) {
 function findDiffBirthday(uid) {
     var mysql = require('mysql');
 
+    // establish mysql connection
     var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "askbot"
-    });
-
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "askbot"
+        });
+    
+    // connect for query processing
     con.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
