@@ -1,7 +1,33 @@
 const processPostback = require('../processes/postback');
 const processMessage = require('../processes/messages');
+var request = require('request')
 
 module.exports = function(app, chalk){
+   app.get('/setup',function(req,res){
+      var messageData = {
+         "get_started":{
+               "payload":"getstarted"
+         }
+      };
+      // Start the request
+      request({
+      url: "https://graph.facebook.com/v2.6/me/messenger_profile?access_token="+ process.env.PAGE_ACCESS_TOKEN,
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      form: messageData
+      },
+      function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+         // Print out the response body
+         res.send(body);
+
+      } else { 
+         // TODO: Handle errors
+         res.send(body);
+      }
+      });
+  });
+
   app.get('/webhook', function(req, res) {
     if (req.query['hub.verify_token'] === process.env.VERIFY_TOKEN){
        console.log('webhook verified');
