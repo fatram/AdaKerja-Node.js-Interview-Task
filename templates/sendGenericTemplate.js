@@ -5,7 +5,7 @@ const sendMessage = require('../templates/sendMessage');
 module.exports = function processPostback(event) {
   const senderID = event.sender.id;
   const payload = event.postback.payload;
-  if (payload === 'WELCOME') {
+  if (payload === 'getstarted') {
      request({ url: "https://graph.facebook.com/v2.6/" + senderID,
      qs: { access_token: process.env.PAGE_ACCESS_TOKEN,
            fields: "first_name"
@@ -21,7 +21,7 @@ module.exports = function processPostback(event) {
           name = bodyObject.first_name;
           greeting = "Hello " + name  + ". ";
      }
-     
+
      let message = greeting + "Welcome to Healthbot. Hope you are doing good today";
      let message2 = "I am your nutrition tracker :-)"
      let message3 = "please type in what you ate like: I ate chicken birayani and 2 chapatis with dal.";
