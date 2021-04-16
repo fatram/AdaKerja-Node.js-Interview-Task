@@ -169,7 +169,10 @@ function findDiffBirthday(uid) {
         if (err) throw err;
         let nextBirthday = new Date(result[0].birthday);
         let today = new Date();
-        nextBirthday.setFullYear(today.getFullYear() + 1);   
+        nextBirthday.setFullYear(today.getFullYear() + 1);  
+        if(today < nextBirthday) {
+            nextBirthday.setFullYear(nextBirthday.getFullYear() - 1);  
+        }
         let diffTime = Math.abs(nextBirthday - today);
         let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
         let msg = "There are " + diffDays + " days left until your next birthday"
