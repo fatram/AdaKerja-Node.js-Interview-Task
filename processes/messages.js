@@ -31,7 +31,7 @@ module.exports = function processMessage(event) {
         console.log("Message is: " + JSON.stringify(message));
         if (message.text) {
             let text = message.text;
-            saveMessage(senderID, text, Date.now()); // save user message in database
+            saveMessage(senderID, text, new Date()); // save user message in database
             var request = require("request");
             if (Date.parse(text)) {
                 updateBirthday(senderID, new Date(text)); // update user birthday in database
